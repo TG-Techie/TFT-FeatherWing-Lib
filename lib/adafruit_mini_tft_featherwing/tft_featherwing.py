@@ -2,6 +2,7 @@
 #
 # Copyright (c) 2016 Scott Shawcroft for Adafruit Industries
 # Copyright (c) 2017-2018 Kattni Rembor for Adafruit Industries
+# Copyright (c) 2019 Jonah Yolles-Murphy for Adafruit Industries
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +32,7 @@
 CircuitPython driver for `Mini Color TFT with Joystick FeatherWing
 <https://www.adafruit.com/product/3321>`_.
 
-* Author(s): hexthat
+* Author(s): Kattni Rembor, Scott Shawcroft, Radomir Dopieralski, Michael McWethy, Jonah Yolles-Murphy, @hexthat#2155
 """
 
 from adafruit_mini_tft_featherwing.st7735r import ST7735R
