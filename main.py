@@ -1,5 +1,6 @@
 from adafruit_mini_tft_featherwing.rgb import colorst as color
-from adafruit_mini_tft_featherwing.joywing import wing
+from adafruit_mini_tft_featherwing.tft_featherwing import wing 
+import time
 
 # wing._disp.
 """
@@ -20,11 +21,14 @@ wing.backlight_off
 wing.backlight_on
 """
 
-wing.backlight_on
+
+wing.backlight = .6
 wing._disp.pixel(0,0, 255)
 wing._disp.rect(5, 5, 150, 50, color(75, 200, 50))
 wing._disp.scroll(20, 15, "hello", color(0,70,255), background = None, size = 3)
 wing._disp.text(10,55,"This test shows \n if it is working",color(255,255,255), background = color(0,0,0), size = 1, rect_extension = 0, italics = 0)
+
+wing.backlight = True
 
 while True:
     if wing.button_a:

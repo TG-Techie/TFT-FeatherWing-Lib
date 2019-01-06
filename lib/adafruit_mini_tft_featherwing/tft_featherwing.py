@@ -59,22 +59,27 @@ __version__ = "0.0.0-auto.0"
 class Joywing:     # pylint: disable=too-many-public-methods
     """Represents a single mini tft featherwing. Do not use more than one at
        a time."""
-    def __init__(self):
+    def __init__(self, _disp_sck = board.SCK, _disp_mosi = board.MOSI, _disp_miso = board.MISO, _disp_cs = board.D5, _disp_dc = board.D6, adress = 94):
         # Only create the joywing module member when we're aren't being imported by Sphinx
         if ("__module__" in dir(digitalio.DigitalInOut) and
                 digitalio.DigitalInOut.__module__ == "sphinx.ext.autodoc"):
             return
-        self._disp_sck = board.SCK
-        self._disp_mosi = board.MOSI
-        self._disp_miso = board.MISO
+        
+        #SPI
+        self._disp_sck = _disp_sck
+        self._disp_mosi = _disp_mosi
+        self._disp_miso = _disp_miso
         # DS and CS pins
-        self._disp_cs = board.D5
-        self._disp_dc = board.D6
+        self._disp_cs = _disp_cs
+        self._disp_dc = _disp_dc
+        
+        #I2C
         self._i2c = busio.I2C(board.SCL, board.SDA)
-        self._seesaw = ss.Seesaw(self._i2c, 94)
+        self._seesaw = ss.Seesaw(self._i2c, adress)
         self._backlight_pin = pwm.PWMOut(self._seesaw, 5)
         self._disp_rst = dio.DigitalIO(self._seesaw, 8)
         self._disp_spi = busio.SPI(clock=board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+        
         # pylint: disable=bad-whitespace
         self._BUTTON_RIGHT = const(7)
         self._BUTTON_DOWN = const(4)
@@ -103,20 +108,28 @@ class Joywing:     # pylint: disable=too-many-public-methods
                        rst=(self._disp_rst), rotation=3)
         self._disp.y_offset = 24
         # clear screen
-        self._disp.fill(0)
+        self._clear()
 
-    @property
-    def black(self):
+    def _clear(self):
         self._disp.fill(0)
-
-    @property
+    
+    '''
     def backlight_off(self):
-        self._backlite.duty_cycle = 0xffff
-
-    @property
+        self._backlite.duty_cycle = 255
+    
+    
     def backlight_on(self):
-        self._backlite.duty_cycle = 0x0000
-
+        self._backlite.duty_cycle = 0'''
+        
+    @property
+    def backlight(self):
+        return self._backlite.duty_cycle
+    
+    @backlight.setter
+    def backlight(self, value):
+        self._backlite.duty_cycle = int(255*  max( 0, min( 1, (1-value) )) )
+        
+    
     @property
     def button_up(self):
         buttons = self._seesaw.digital_read_bulk(self._button_mask)
